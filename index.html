@@ -1,0 +1,2218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>J. Roz Music — The Sound of the New Kenyan Wave</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --black: #050508;
+      --deep-black: #020204;
+      --purple: #7B2FBE;
+      --purple-light: #9B4FDE;
+      --purple-glow: rgba(123, 47, 190, 0.4);
+      --purple-subtle: rgba(123, 47, 190, 0.12);
+      --white: #FFFFFF;
+      --off-white: #E8E4EE;
+      --grey: #9B97A3;
+      --dark-grey: #1A1A22;
+      --card-bg: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.07);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ── NOISE GRAIN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.35;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1.2rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s, backdrop-filter 0.4s, padding 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(5, 5, 8, 0.92);
+      backdrop-filter: blur(20px);
+      padding: 0.9rem 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--purple-light); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--grey);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      background: var(--purple);
+      color: var(--white) !important;
+      padding: 0.6rem 1.4rem;
+      border-radius: 2px;
+    }
+    .nav-cta:hover { background: var(--purple-light) !important; color: var(--white) !important; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      width: 26px; height: 2px;
+      background: var(--white);
+      transition: all 0.3s;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-slides {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+      background-size: cover;
+      background-position: center top;
+    }
+    .hero-slide.active { opacity: 1; }
+
+    /* Placeholder slides using CSS gradients + artistic layering */
+    .hero-slide:nth-child(1) {
+      background: 
+        linear-gradient(180deg, transparent 30%, rgba(5,5,8,0.85) 100%),
+        linear-gradient(135deg, #1a0030 0%, #0d001a 50%, #050508 100%);
+    }
+    .hero-slide:nth-child(2) {
+      background: 
+        linear-gradient(180deg, transparent 30%, rgba(5,5,8,0.85) 100%),
+        linear-gradient(225deg, #120026 0%, #05000f 60%, #050508 100%);
+    }
+    .hero-slide:nth-child(3) {
+      background: 
+        linear-gradient(180deg, transparent 30%, rgba(5,5,8,0.85) 100%),
+        linear-gradient(160deg, #0d0020 0%, #1a003a 40%, #050508 100%);
+    }
+
+    /* Artist silhouette art for slides */
+    .hero-slide::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 65% 40%, var(--purple-glow), transparent 70%);
+    }
+
+    .hero-slide:nth-child(1)::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 5%;
+      width: 55%;
+      height: 95%;
+      background: 
+        radial-gradient(ellipse 40% 60% at 50% 30%, rgba(123,47,190,0.15) 0%, transparent 60%),
+        linear-gradient(to bottom, transparent 0%, rgba(5,5,8,0.3) 100%);
+      clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(90deg, rgba(5,5,8,0.75) 0%, rgba(5,5,8,0.2) 50%, transparent 100%),
+        linear-gradient(0deg, rgba(5,5,8,0.9) 0%, transparent 50%);
+    }
+
+    /* IG images as hero — using actual IG embed images via proxy */
+    .hero-img-panel {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 55%;
+      overflow: hidden;
+      opacity: 0.55;
+    }
+    .hero-img-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: saturate(0.7) brightness(0.8);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 1300px;
+      width: 100%;
+      padding: 0 4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      border: 1px solid var(--purple);
+      padding: 0.4rem 1rem;
+      width: fit-content;
+    }
+    .hero-badge i { font-size: 0.6rem; animation: pulse 2s infinite; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      text-shadow: 0 0 80px rgba(123,47,190,0.3);
+    }
+    .hero-title em {
+      font-style: normal;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.6);
+    }
+
+    .hero-sub {
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--off-white);
+      opacity: 0.75;
+      max-width: 520px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--purple);
+      color: var(--white);
+      padding: 1rem 2.2rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.5s;
+    }
+    .btn-primary:hover { background: var(--purple-light); transform: translateY(-2px); box-shadow: 0 10px 40px rgba(123,47,190,0.4); }
+    .btn-primary:hover::after { transform: translateX(100%); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      padding: 1rem 2.2rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-outline:hover { border-color: var(--purple-light); color: var(--purple-light); transform: translateY(-2px); }
+
+    .hero-slide-indicators {
+      position: absolute;
+      bottom: 3rem;
+      left: 4rem;
+      z-index: 10;
+      display: flex;
+      gap: 0.6rem;
+    }
+    .indicator {
+      width: 30px; height: 2px;
+      background: rgba(255,255,255,0.25);
+      cursor: pointer;
+      transition: all 0.4s;
+    }
+    .indicator.active { background: var(--purple-light); width: 60px; }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 4rem;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+    .hero-scroll::after {
+      content: '';
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--grey), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ── SECTION BASE ── */
+    section { position: relative; overflow: hidden; }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 4rem;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .section-label::before {
+      content: '';
+      width: 30px; height: 1px;
+      background: var(--purple);
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── ABOUT ── */
+    .about {
+      padding: 8rem 0;
+      background: var(--deep-black);
+    }
+    .about::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--purple-subtle), transparent 70%);
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .about-visual {
+      position: relative;
+    }
+
+    .about-img-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+    }
+    .about-img-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--purple-subtle), transparent 60%);
+      z-index: 1;
+    }
+    .about-img-main {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      transition: transform 6s ease;
+    }
+    .about-img-frame:hover .about-img-main { transform: scale(1.05); }
+
+    .about-img-accent {
+      position: absolute;
+      bottom: -1.5rem;
+      right: -1.5rem;
+      width: 45%;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border: 3px solid var(--black);
+      z-index: 2;
+    }
+    .about-img-accent img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .about-stats {
+      position: absolute;
+      top: 2rem;
+      left: -2rem;
+      background: rgba(5,5,8,0.9);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--purple);
+      padding: 1.2rem 1.5rem;
+      z-index: 3;
+    }
+    .stat-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: var(--purple-light);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-top: 0.2rem;
+    }
+
+    .about-text { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .about-text p {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.9;
+      color: var(--off-white);
+      opacity: 0.85;
+    }
+
+    .about-text p strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--border);
+      color: var(--grey);
+      transition: all 0.3s;
+    }
+    .tag:hover { border-color: var(--purple); color: var(--purple-light); }
+
+    /* ── SERVICES ── */
+    .services {
+      padding: 8rem 0;
+      background: var(--black);
+    }
+    .services::before {
+      content: '';
+      position: absolute;
+      right: -200px;
+      top: 50%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--purple-subtle), transparent 70%);
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .services-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: end;
+      margin-bottom: 5rem;
+    }
+    .services-header p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--grey);
+      align-self: end;
+    }
+
+    .services-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--border);
+    }
+
+    .services-col {
+      background: var(--black);
+      padding: 3rem;
+    }
+    .services-col-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .services-col-icon {
+      width: 44px; height: 44px;
+      background: var(--purple-subtle);
+      border: 1px solid var(--purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--purple-light);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .services-col-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .service-item {
+      display: flex;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .service-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+    .service-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      color: var(--purple);
+      opacity: 0.5;
+      flex-shrink: 0;
+      width: 30px;
+    }
+    .service-info h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+    }
+    .service-info p {
+      font-size: 0.8rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--grey);
+    }
+
+    /* ── MEDIA / MUSIC ── */
+    .media {
+      padding: 8rem 0;
+      background: var(--deep-black);
+    }
+
+    .media-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 4rem;
+    }
+
+    .yt-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .yt-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .yt-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(123,47,190,0.25);
+      border-color: var(--purple);
+    }
+
+    .yt-thumb {
+      position: relative;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: #111;
+    }
+    .yt-thumb iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .yt-thumb-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--purple-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .yt-card:hover .yt-thumb-overlay { opacity: 1; }
+    .yt-play-btn {
+      width: 56px; height: 56px;
+      background: var(--purple);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: white;
+    }
+
+    .yt-info {
+      padding: 1.2rem;
+    }
+    .yt-info h4 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 0.4rem;
+    }
+    .yt-info span {
+      font-size: 0.72rem;
+      color: var(--grey);
+      letter-spacing: 0.05em;
+    }
+
+    .yt-channel-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--purple-light);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      border: 1px solid var(--purple);
+      padding: 0.6rem 1.4rem;
+      transition: all 0.3s;
+    }
+    .yt-channel-link:hover { background: var(--purple); color: white; }
+
+    /* ── WHY BRANDS ── */
+    .why-brands {
+      padding: 8rem 0;
+      background: var(--black);
+      position: relative;
+    }
+    .why-brands::before {
+      content: '';
+      position: absolute;
+      left: -200px;
+      top: 50%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--purple-subtle), transparent 70%);
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .why-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .why-left .section-title { margin-bottom: 1.5rem; }
+    .why-left p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--grey);
+      margin-bottom: 2rem;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+    }
+    .why-item {
+      background: var(--dark-grey);
+      padding: 2.2rem;
+      transition: background 0.3s;
+    }
+    .why-item:hover { background: rgba(123,47,190,0.12); }
+
+    .why-icon {
+      width: 48px; height: 48px;
+      background: var(--purple-subtle);
+      border: 1px solid var(--purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--purple-light);
+      margin-bottom: 1.2rem;
+    }
+    .why-item h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.02em;
+    }
+    .why-item p {
+      font-size: 0.8rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--grey);
+    }
+
+    /* ── GALLERY ── */
+    .gallery {
+      padding: 8rem 0;
+      background: var(--deep-black);
+    }
+
+    .gallery-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 4rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 8px;
+    }
+
+    .g-item {
+      overflow: hidden;
+      position: relative;
+      background: var(--dark-grey);
+      cursor: pointer;
+    }
+    .g-item:nth-child(1) { grid-column: span 5; grid-row: span 2; aspect-ratio: 4/5; }
+    .g-item:nth-child(2) { grid-column: span 4; aspect-ratio: 4/3; }
+    .g-item:nth-child(3) { grid-column: span 3; aspect-ratio: 4/3; }
+    .g-item:nth-child(4) { grid-column: span 4; aspect-ratio: 4/3; }
+    .g-item:nth-child(5) { grid-column: span 3; aspect-ratio: 4/3; }
+    .g-item:nth-child(6) { grid-column: span 4; aspect-ratio: 4/3; }
+    .g-item:nth-child(7) { grid-column: span 8; aspect-ratio: 16/6; }
+
+    .g-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      display: block;
+    }
+    .g-item:hover img { transform: scale(1.08); }
+
+    .g-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(5,5,8,0.85) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      display: flex;
+      align-items: flex-end;
+      padding: 1.2rem;
+    }
+    .g-item:hover .g-overlay { opacity: 1; }
+
+    .g-overlay-content {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    .g-overlay-content i { color: var(--purple-light); }
+
+    /* Gallery placeholder art */
+    .g-placeholder {
+      width: 100%;
+      height: 100%;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .g-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+    .gp-1::before { background: linear-gradient(160deg, #1a003a, #0d0020, #050508); }
+    .gp-2::before { background: linear-gradient(210deg, #12002a, #05000f, #0a001a); }
+    .gp-3::before { background: linear-gradient(140deg, #0d0020, #1a003a, #050508); }
+    .gp-4::before { background: linear-gradient(190deg, #05000f, #15002e, #050508); }
+    .gp-5::before { background: linear-gradient(170deg, #1a003a, #050508, #0d0020); }
+    .gp-6::before { background: linear-gradient(220deg, #0a001a, #1a003a, #050508); }
+    .gp-7::before { background: linear-gradient(150deg, #050508, #0d0020, #1a003a); }
+
+    .gp-icon {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+    .gp-icon i {
+      font-size: 2rem;
+      color: var(--purple);
+      opacity: 0.3;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .gp-icon span {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--grey);
+      opacity: 0.5;
+    }
+
+    /* ── INSTAGRAM LIVE FEED ── */
+    .ig-section {
+      padding: 6rem 0;
+      background: var(--black);
+    }
+    .ig-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(123,47,190,0.08), transparent 70%);
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .ig-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+    }
+
+    .ig-profile-bar {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.2rem 2rem;
+      border: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+      background: var(--card-bg);
+    }
+    .ig-profile-avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: white;
+      flex-shrink: 0;
+    }
+    .ig-profile-info h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .ig-profile-info span {
+      font-size: 0.75rem;
+      color: var(--grey);
+    }
+    .ig-follow-btn {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.6rem 1.4rem;
+      transition: all 0.3s;
+    }
+    .ig-follow-btn:hover { border-color: #833ab4; background: linear-gradient(135deg, #833ab4, #fd1d1d); }
+
+    /* Elfsight widget container */
+    .ig-widget-container {
+      min-height: 400px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 3rem;
+      background: var(--card-bg);
+      position: relative;
+      overflow: hidden;
+    }
+    .ig-widget-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--purple-subtle), transparent);
+      pointer-events: none;
+    }
+
+    /* IG manual grid (fallback / live previews via oEmbed) */
+    .ig-posts-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .ig-post-card {
+      aspect-ratio: 1;
+      background: var(--dark-grey);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .ig-post-card:hover { transform: scale(1.02); z-index: 2; }
+    .ig-post-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .ig-post-card:hover img { transform: scale(1.1); }
+
+    .ig-post-hover {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .ig-post-card:hover .ig-post-hover { opacity: 1; }
+    .ig-post-hover i { font-size: 1.8rem; color: white; }
+
+    .ig-setup-note {
+      background: rgba(123,47,190,0.08);
+      border: 1px solid var(--purple);
+      padding: 1.5rem 2rem;
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      line-height: 1.7;
+      color: var(--grey);
+    }
+    .ig-setup-note strong { color: var(--purple-light); }
+    .ig-setup-note a { color: var(--purple-light); text-decoration: none; }
+    .ig-setup-note a:hover { text-decoration: underline; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials {
+      padding: 8rem 0;
+      background: var(--deep-black);
+      position: relative;
+    }
+    .testimonials::after {
+      content: '"';
+      position: absolute;
+      right: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 30rem;
+      color: var(--purple);
+      opacity: 0.03;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .testi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative;
+    }
+    .testi-card:hover {
+      border-color: var(--purple);
+      transform: translateY(-4px);
+    }
+    .testi-card::before {
+      content: '"';
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      color: var(--purple);
+      opacity: 0.3;
+      line-height: 1;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .testi-quote {
+      font-size: 0.9rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--off-white);
+      margin-bottom: 2rem;
+    }
+
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .testi-avatar {
+      width: 40px; height: 40px;
+      background: var(--purple-subtle);
+      border: 1px solid var(--purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: var(--purple-light);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .testi-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .testi-role {
+      font-size: 0.72rem;
+      color: var(--grey);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      padding: 8rem 0;
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(123,47,190,0.15), transparent 65%);
+      pointer-events: none;
+    }
+    .cta-section::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(135deg, transparent 0%, rgba(123,47,190,0.04) 50%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .cta-inner .section-label { justify-content: center; }
+    .cta-inner .section-label::before { display: none; }
+    .cta-inner .section-label::after {
+      content: '';
+      width: 30px; height: 1px;
+      background: var(--purple);
+    }
+
+    .cta-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1;
+      letter-spacing: 0.03em;
+      margin-bottom: 1.5rem;
+    }
+    .cta-sub {
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--grey);
+      margin-bottom: 3rem;
+    }
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ── CONTACT ── */
+    .contact {
+      padding: 8rem 0;
+      background: var(--deep-black);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .contact-info { display: flex; flex-direction: column; gap: 2rem; }
+
+    .contact-item {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+    .contact-item:hover { border-color: var(--purple); }
+
+    .contact-icon {
+      width: 44px; height: 44px;
+      background: var(--purple-subtle);
+      border: 1px solid var(--purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: var(--purple-light);
+      flex-shrink: 0;
+    }
+    .contact-detail h4 {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 0.4rem;
+    }
+    .contact-detail p, .contact-detail a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .contact-detail a:hover { color: var(--purple-light); }
+
+    .whatsapp-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      background: #25D366;
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: none;
+    }
+    .whatsapp-btn:hover { background: #20bd59; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(37,211,102,0.3); }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .form-group label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
+      padding: 0.85rem 1rem;
+      outline: none;
+      transition: border-color 0.3s;
+      width: 100%;
+      -webkit-appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--purple);
+    }
+    .form-group select option { background: #1a1a22; }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--deep-black);
+      border-top: 1px solid var(--border);
+      padding: 4rem 0 2.5rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 4rem;
+      margin-bottom: 3.5rem;
+    }
+    .footer-brand .nav-logo {
+      display: block;
+      margin-bottom: 1.2rem;
+      font-size: 2rem;
+    }
+    .footer-brand p {
+      font-size: 0.82rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--grey);
+      max-width: 280px;
+    }
+    .footer-socials {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+    .social-btn {
+      width: 40px; height: 40px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--grey);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+    .social-btn:hover { border-color: var(--purple); color: var(--purple-light); background: var(--purple-subtle); }
+
+    .footer-col h5 {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+    .footer-col a {
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: var(--grey);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-col a:hover { color: var(--white); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .footer-bottom p {
+      font-size: 0.75rem;
+      color: var(--grey);
+      letter-spacing: 0.05em;
+    }
+    .footer-bottom a { color: var(--purple-light); text-decoration: none; }
+    .footer-credit {
+      font-size: 0.75rem;
+      color: var(--grey);
+    }
+    .footer-credit a { color: var(--purple-light); text-decoration: none; }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-up:nth-child(2) { transition-delay: 0.1s; }
+    .fade-up:nth-child(3) { transition-delay: 0.2s; }
+    .fade-up:nth-child(4) { transition-delay: 0.3s; }
+
+    /* ── MOBILE NAV OVERLAY ── */
+    .mobile-nav {
+      position: fixed;
+      inset: 0;
+      background: rgba(5,5,8,0.98);
+      backdrop-filter: blur(20px);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      transform: translateX(100%);
+      transition: transform 0.4s ease;
+    }
+    .mobile-nav.open { transform: translateX(0); }
+    .mobile-nav a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .mobile-nav a:hover { color: var(--purple-light); }
+    .mobile-nav-close {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .container { padding: 0 2.5rem; }
+      nav { padding: 1.2rem 2.5rem; }
+      nav.scrolled { padding: 0.9rem 2.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .about-visual { max-width: 500px; margin: 0 auto; }
+      .services-columns { grid-template-columns: 1fr; }
+      .why-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .yt-grid { grid-template-columns: 1fr 1fr; }
+      .testi-grid { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
+      .ig-posts-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 0 1.5rem; }
+      nav { padding: 1.2rem 1.5rem; }
+      nav.scrolled { padding: 0.9rem 1.5rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero-content { padding: 0 1.5rem; }
+      .hero-slide-indicators { left: 1.5rem; }
+      .hero-scroll { display: none; }
+      .hero-img-panel { opacity: 0.3; }
+      .about { padding: 5rem 0; }
+      .services { padding: 5rem 0; }
+      .services-header { grid-template-columns: 1fr; gap: 1.5rem; }
+      .media { padding: 5rem 0; }
+      .media-header { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+      .yt-grid { grid-template-columns: 1fr; }
+      .why-brands { padding: 5rem 0; }
+      .why-grid { grid-template-columns: 1fr; }
+      .gallery { padding: 5rem 0; }
+      .gallery-header { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .g-item { grid-column: span 1 !important; grid-row: span 1 !important; aspect-ratio: 1 !important; }
+      .ig-section { padding: 5rem 0; }
+      .ig-header { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+      .ig-posts-grid { grid-template-columns: repeat(2, 1fr); }
+      .testimonials { padding: 5rem 0; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .cta-section { padding: 5rem 0; }
+      .contact { padding: 5rem 0; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { padding: 3rem 0 2rem; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+      .services-col { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── MOBILE NAV ── -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">J.<span>ROZ</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#media">Media</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#instagram">Instagram</a></li>
+    <li><a href="#contact" class="nav-cta">Book Now</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" id="mobileClose"><i class="fa fa-times"></i></button>
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#services" class="mobile-link">Services</a>
+  <a href="#media" class="mobile-link">Media</a>
+  <a href="#gallery" class="mobile-link">Gallery</a>
+  <a href="#instagram" class="mobile-link">Instagram</a>
+  <a href="#contact" class="mobile-link">Book Now</a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero" id="home">
+  <div class="hero-slides">
+    <div class="hero-slide active">
+      <div class="hero-img-panel">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png"
+             onerror="this.style.display='none'"
+             alt="J. Roz" />
+      </div>
+    </div>
+    <div class="hero-slide">
+      <div class="hero-img-panel">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png"
+             onerror="this.style.display='none'"
+             alt="J. Roz" />
+      </div>
+    </div>
+    <div class="hero-slide">
+      <div class="hero-img-panel">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png"
+             onerror="this.style.display='none'"
+             alt="J. Roz" />
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <i class="fa fa-circle"></i>
+      Nairobi, Kenya — Est. Music Artist
+    </div>
+    <h1 class="hero-title">
+      The Sound<br>of the <em>New</em><br>Kenyan Wave
+    </h1>
+    <p class="hero-sub">Live Performances. Brand Activations. Culture-Driven Influence.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">Book J. Roz</a>
+      <a href="#media" class="btn-outline">View Media Kit</a>
+    </div>
+  </div>
+
+  <div class="hero-slide-indicators" id="indicators">
+    <div class="indicator active" data-index="0"></div>
+    <div class="indicator" data-index="1"></div>
+    <div class="indicator" data-index="2"></div>
+  </div>
+
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual fade-up">
+        <div class="about-img-frame">
+          <!-- Replace src with actual image URL -->
+          <div style="width:100%;height:100%;min-height:500px;background:linear-gradient(160deg,#1a003a,#0d0020,#050508);display:flex;align-items:center;justify-content:center;">
+            <div style="text-align:center;">
+              <i class="fa fa-music" style="font-size:3rem;color:var(--purple);opacity:0.4;display:block;margin-bottom:1rem;"></i>
+              <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--grey);opacity:0.5;">Artist Photo — J. Roz</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-img-accent">
+          <div style="width:100%;height:100%;background:linear-gradient(210deg,#12002a,#05000f);display:flex;align-items:center;justify-content:center;">
+            <i class="fa fa-microphone" style="font-size:1.8rem;color:var(--purple-light);opacity:0.5;"></i>
+          </div>
+        </div>
+        <div class="about-stats">
+          <div class="stat-number">100K+</div>
+          <div class="stat-label">Social Reach</div>
+        </div>
+      </div>
+
+      <div class="about-text fade-up">
+        <div>
+          <div class="section-label">About the Artist</div>
+          <h2 class="section-title">Born to<br>Command<br>the Stage</h2>
+        </div>
+        <p>
+          <strong>J. Roz</strong> is one of Kenya's most exciting emerging music forces — a performing artist whose sound sits at the intersection of Afro-fusion, R&B, and the raw energy of Nairobi street culture. Her music doesn't just play. It moves rooms.
+        </p>
+        <p>
+          With a growing digital following and a reputation for commanding live performances, J. Roz has established herself as a <strong>youth culture powerhouse</strong>. She speaks the language of Kenya's next generation — authentically, boldly, and without compromise.
+        </p>
+        <p>
+          For brands, event organizers, and media professionals, J. Roz represents more than an artist. She is an <strong>influence vehicle</strong> — a direct line to the youth audience that makes purchasing decisions, drives trends, and defines culture.
+        </p>
+        <div class="about-tags">
+          <span class="tag">Afro-Fusion</span>
+          <span class="tag">R&amp;B</span>
+          <span class="tag">Live Performance</span>
+          <span class="tag">Youth Culture</span>
+          <span class="tag">Nairobi</span>
+          <span class="tag">Brand Activations</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="services-header">
+      <div>
+        <div class="section-label">What She Offers</div>
+        <h2 class="section-title">Services &amp;<br>Engagements</h2>
+      </div>
+      <p>J. Roz brings a fully packaged artist experience to every collaboration. Whether you need a stage presence that electrifies a crowd or a face that authentically represents your brand, the offering is designed to deliver measurable impact.</p>
+    </div>
+
+    <div class="services-columns">
+      <div class="services-col fade-up">
+        <div class="services-col-header">
+          <div class="services-col-icon"><i class="fa fa-building"></i></div>
+          <div class="services-col-title">Corporate &amp; Brand Services</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">01</div>
+          <div class="service-info">
+            <h4>Brand Activations</h4>
+            <p>High-energy live appearances that anchor your activation and drive engagement. J. Roz brings the crowd to your brand moment.</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">02</div>
+          <div class="service-info">
+            <h4>Influencer Campaign Collaborations</h4>
+            <p>Authentic content creation and digital amplification targeting Kenya's youth demographic across social platforms.</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">03</div>
+          <div class="service-info">
+            <h4>Product Launch Performances</h4>
+            <p>Transform your product launch into a cultural moment. J. Roz ensures your brand enters the room with impact.</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">04</div>
+          <div class="service-info">
+            <h4>Sponsored Content &amp; Promotions</h4>
+            <p>Seamless brand integrations into music content, reels, and campaign media that feel organic — not transactional.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="services-col fade-up">
+        <div class="services-col-header">
+          <div class="services-col-icon"><i class="fa fa-star"></i></div>
+          <div class="services-col-title">Event &amp; Performance Services</div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">01</div>
+          <div class="service-info">
+            <h4>Club &amp; Venue Performances</h4>
+            <p>A proven draw for nightlife venues across Nairobi. J. Roz brings consistency, professionalism, and crowd energy.</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">02</div>
+          <div class="service-info">
+            <h4>Festival Appearances</h4>
+            <p>Festival-ready with full performance capability. From headline slots to opening acts — versatile and always stage-ready.</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">03</div>
+          <div class="service-info">
+            <h4>Corporate Roadshows</h4>
+            <p>Mobile tour activations that carry your brand message city-to-city with entertainment that keeps audiences engaged.</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <div class="service-num">04</div>
+          <div class="service-info">
+            <h4>Private &amp; Exclusive Events</h4>
+            <p>Tailored private performances for high-end events, VIP gatherings, and exclusive brand experiences.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MEDIA ── -->
+<section class="media" id="media">
+  <div class="container">
+    <div class="media-header fade-up">
+      <div>
+        <div class="section-label">Music &amp; Video</div>
+        <h2 class="section-title">Watch &amp; Listen</h2>
+      </div>
+      <a href="https://www.youtube.com/@J.Roz_Music" target="_blank" class="yt-channel-link">
+        <i class="fab fa-youtube"></i> Full Channel
+      </a>
+    </div>
+
+    <div class="yt-grid">
+      <div class="yt-card fade-up">
+        <div class="yt-thumb">
+          <iframe
+            src="https://www.youtube.com/embed?listType=user_uploads&list=J.Roz_Music"
+            title="J. Roz Music" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy">
+          </iframe>
+        </div>
+        <div class="yt-info">
+          <h4>Latest Release</h4>
+          <span>J. Roz Music — Official Channel</span>
+        </div>
+      </div>
+
+      <div class="yt-card fade-up">
+        <div class="yt-thumb" style="background:var(--dark-grey);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;">
+          <a href="https://www.youtube.com/@J.Roz_Music" target="_blank" style="text-align:center;text-decoration:none;">
+            <div style="width:64px;height:64px;background:#FF0000;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+              <i class="fab fa-youtube" style="font-size:1.8rem;color:white;"></i>
+            </div>
+            <p style="font-size:0.85rem;color:var(--off-white);font-weight:600;">@J.Roz_Music</p>
+            <p style="font-size:0.75rem;color:var(--grey);margin-top:0.3rem;">YouTube Channel</p>
+          </a>
+        </div>
+        <div class="yt-info">
+          <h4>Subscribe for New Releases</h4>
+          <span>Hit subscribe to stay updated</span>
+        </div>
+      </div>
+
+      <div class="yt-card fade-up">
+        <div class="yt-thumb">
+          <iframe
+            src="https://www.youtube.com/embed?listType=user_uploads&list=UCJ.Roz_Music"
+            title="J. Roz Music" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy">
+          </iframe>
+        </div>
+        <div class="yt-info">
+          <h4>Live Performances</h4>
+          <span>Stage moments &amp; live sessions</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY BRANDS ── -->
+<section class="why-brands" id="why">
+  <div class="container">
+    <div class="why-inner">
+      <div class="why-left fade-up">
+        <div class="section-label">The Case for Partnership</div>
+        <h2 class="section-title">Why Brands<br>Work with<br>J. Roz</h2>
+        <p>Kenya's youth market does not respond to traditional advertising. They respond to culture — and J. Roz is culture. Partnering with her means embedding your brand into the conversations, moments, and memories that matter to the next generation of consumers.</p>
+        <a href="#contact" class="btn-primary">Start a Conversation</a>
+      </div>
+      <div class="why-grid fade-up">
+        <div class="why-item">
+          <div class="why-icon"><i class="fa fa-users"></i></div>
+          <h4>Engaged Youth Audience</h4>
+          <p>Direct access to Kenya's 18–30 demographic — the most brand-responsive consumer segment in the market.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><i class="fa fa-bolt"></i></div>
+          <h4>Electric Stage Presence</h4>
+          <p>Every performance is crafted to hold attention and create shareable moments. No filler. Pure energy.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><i class="fa fa-chart-line"></i></div>
+          <h4>Culture Relevance</h4>
+          <p>J. Roz is at the forefront of Kenyan Afro-fusion — where trends begin, not where they arrive late.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><i class="fa fa-handshake"></i></div>
+          <h4>Professional Execution</h4>
+          <p>Reliable, prepared, and managed. Every booking is handled with the professionalism corporate clients demand.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><i class="fa fa-mobile-alt"></i></div>
+          <h4>Digital Amplification</h4>
+          <p>Every collaboration extends beyond the event — content creation, social reach, and ongoing brand visibility.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><i class="fa fa-map-marker-alt"></i></div>
+          <h4>Nairobi-Based, Nationally Scalable</h4>
+          <p>Rooted in Nairobi's culture, with the flexibility to travel and perform at national and regional level.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── GALLERY ── -->
+<section class="gallery" id="gallery">
+  <div class="container">
+    <div class="gallery-header fade-up">
+      <div>
+        <div class="section-label">Visual Identity</div>
+        <h2 class="section-title">Gallery</h2>
+      </div>
+      <a href="https://www.instagram.com/jroz_music/" target="_blank" class="btn-outline">
+        <i class="fab fa-instagram"></i> &nbsp; View Full Feed
+      </a>
+    </div>
+
+    <div class="gallery-grid">
+      <!-- Each g-item links to the actual IG post -->
+      <a class="g-item" href="https://www.instagram.com/p/DSnFPKJjPdz/" target="_blank">
+        <div class="g-placeholder gp-1">
+          <div class="gp-icon"><i class="fab fa-instagram"></i><span>View on Instagram</span></div>
+        </div>
+        <div class="g-overlay"><div class="g-overlay-content"><i class="fab fa-instagram"></i> View Post</div></div>
+      </a>
+      <a class="g-item" href="https://www.instagram.com/p/DSeXTfWjJdd/" target="_blank">
+        <div class="g-placeholder gp-2">
+          <div class="gp-icon"><i class="fab fa-instagram"></i><span>View on Instagram</span></div>
+        </div>
+        <div class="g-overlay"><div class="g-overlay-content"><i class="fab fa-instagram"></i> View Post</div></div>
+      </a>
+      <a class="g-item" href="https://www.instagram.com/p/DUckR9YDMj9/" target="_blank">
+        <div class="g-placeholder gp-3">
+          <div class="gp-icon"><i class="fab fa-instagram"></i><span>View on Instagram</span></div>
+        </div>
+        <div class="g-overlay"><div class="g-overlay-content"><i class="fab fa-instagram"></i> View Post</div></div>
+      </a>
+      <a class="g-item" href="https://www.instagram.com/p/DMDuNSNsg6p/" target="_blank">
+        <div class="g-placeholder gp-4">
+          <div class="gp-icon"><i class="fab fa-instagram"></i><span>View on Instagram</span></div>
+        </div>
+        <div class="g-overlay"><div class="g-overlay-content"><i class="fab fa-instagram"></i> View Post</div></div>
+      </a>
+      <a class="g-item" href="https://www.instagram.com/p/DMzgIf-NC8L/" target="_blank">
+        <div class="g-placeholder gp-5">
+          <div class="gp-icon"><i class="fab fa-instagram"></i><span>View on Instagram</span></div>
+        </div>
+        <div class="g-overlay"><div class="g-overlay-content"><i class="fab fa-instagram"></i> View Post</div></div>
+      </a>
+      <a class="g-item" href="https://www.instagram.com/jroz_music/" target="_blank">
+        <div class="g-placeholder gp-6">
+          <div class="gp-icon"><i class="fab fa-instagram"></i><span>View on Instagram</span></div>
+        </div>
+        <div class="g-overlay"><div class="g-overlay-content"><i class="fab fa-instagram"></i> View More</div></div>
+      </a>
+      <a class="g-item" href="https://www.instagram.com/jroz_music/" target="_blank">
+        <div class="g-placeholder gp-7">
+          <div class="gp-icon"><i class="fab fa-instagram"></i><span>Follow for More</span></div>
+        </div>
+        <div class="g-overlay"><div class="g-overlay-content"><i class="fab fa-instagram"></i> @jroz_music</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── INSTAGRAM LIVE FEED ── -->
+<section class="ig-section" id="instagram">
+  <div class="container">
+    <div class="ig-header fade-up">
+      <div>
+        <div class="section-label">Live Instagram Feed</div>
+        <h2 class="section-title">Follow the<br>Journey</h2>
+      </div>
+      <a href="https://www.instagram.com/jroz_music/" target="_blank" class="ig-follow-btn">
+        <i class="fab fa-instagram"></i> @jroz_music
+      </a>
+    </div>
+
+    <div class="ig-profile-bar">
+      <div class="ig-profile-avatar"><i class="fab fa-instagram"></i></div>
+      <div class="ig-profile-info">
+        <h4>J. Roz Music</h4>
+        <span>@jroz_music — Nairobi, Kenya</span>
+      </div>
+      <a href="https://www.instagram.com/jroz_music/" target="_blank" class="ig-follow-btn">
+        Follow
+      </a>
+    </div>
+
+    <!-- 
+      LIVE INSTAGRAM FEED — TWO INTEGRATION OPTIONS:
+
+      OPTION 1 (Recommended — Free): Elfsight Instagram Feed Widget
+      1. Go to https://elfsight.com/instagram-feed-widget/
+      2. Sign up free and connect @jroz_music
+      3. Copy the embed code and replace the comment below
+
+      OPTION 2: EmbedSocial / SnapWidget
+      Free tiers available at https://snapwidget.com
+
+      FOR NOW: The feed below shows the live IG profile via iframe
+      (Note: Meta may restrict iframe embedding — use Elfsight for best results)
+    -->
+
+    <!-- Elfsight Widget Placeholder — Replace with your widget code -->
+    <div style="min-height:500px;border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;padding:3rem;background:var(--card-bg);text-align:center;">
+      <div style="width:70px;height:70px;background:linear-gradient(45deg,#833ab4,#fd1d1d,#fcb045);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+        <i class="fab fa-instagram" style="font-size:2rem;color:white;"></i>
+      </div>
+      <div>
+        <p style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.05em;margin-bottom:0.5rem;">@jroz_music</p>
+        <p style="font-size:0.85rem;color:var(--grey);max-width:400px;line-height:1.7;">Follow J. Roz on Instagram for the latest performances, behind-the-scenes moments, and new music updates.</p>
+      </div>
+      <a href="https://www.instagram.com/jroz_music/" target="_blank" class="btn-primary">
+        <i class="fab fa-instagram"></i> &nbsp; View Live Feed on Instagram
+      </a>
+    </div>
+
+    <!-- 
+      TO ACTIVATE LIVE FEED: 
+      Replace the div above with your Elfsight embed snippet, e.g.:
+      <script src="https://static.elfsight.com/platform/platform.js" async></script>
+      <div class="elfsight-app-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" data-elfsight-app-lazy></div>
+    -->
+
+    <div class="ig-setup-note">
+      <strong>Web Developer Note:</strong> To activate the live Instagram feed (auto-updating with every new post), create a free account at <a href="https://elfsight.com/instagram-feed-widget/" target="_blank">Elfsight.com</a>, connect the @jroz_music account, and replace the placeholder above with the generated embed code. The free plan supports up to 200 monthly views. For unlimited views, upgrade or use <a href="https://snapwidget.com" target="_blank">SnapWidget</a> or <a href="https://embedsocial.com" target="_blank">EmbedSocial</a> as alternatives.
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">Social Proof</div>
+      <h2 class="section-title">What People Say</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card fade-up">
+        <p class="testi-quote">An electric performer who understands how to work a crowd. J. Roz turned our product launch into one of the most talked-about activations of the year. Brands should not sleep on this artist.</p>
+        <div class="testi-author">
+          <div class="testi-avatar"><i class="fa fa-user"></i></div>
+          <div>
+            <div class="testi-name">Brand Manager, FMCG Sector</div>
+            <div class="testi-role">Nairobi, Kenya</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card fade-up">
+        <p class="testi-quote">Perfect for brand activations — she connects with the audience on a level that traditional advertising simply cannot reach. Young, authentic, and incredibly professional behind the scenes.</p>
+        <div class="testi-author">
+          <div class="testi-avatar"><i class="fa fa-user"></i></div>
+          <div>
+            <div class="testi-name">Events Director, Entertainment Agency</div>
+            <div class="testi-role">East Africa</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card fade-up">
+        <p class="testi-quote">We booked J. Roz for our festival and she delivered beyond expectation. The crowd response was outstanding. Already planning our next collaboration — she is the real deal.</p>
+        <div class="testi-author">
+          <div class="testi-avatar"><i class="fa fa-user"></i></div>
+          <div>
+            <div class="testi-name">Festival Organizer</div>
+            <div class="testi-role">Nairobi Music Scene</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-inner fade-up">
+      <div class="section-label">Ready to Partner</div>
+      <h2 class="cta-title">Let's Create<br>Impact Together</h2>
+      <p class="cta-sub">Whether you are a brand, event organizer, PR agency, or media house — J. Roz is ready to bring something exceptional to your project. Let us talk.</p>
+      <div class="cta-buttons">
+        <a href="#contact" class="btn-primary">Book Now</a>
+        <a href="https://wa.me/254700000000?text=Hi%2C%20I'm%20interested%20in%20booking%20J.%20Roz%20for%20an%20event." target="_blank" class="whatsapp-btn">
+          <i class="fab fa-whatsapp"></i> Contact Management
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div style="margin-bottom:4rem;" class="fade-up">
+      <div class="section-label">Get in Touch</div>
+      <h2 class="section-title">Book J. Roz</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info fade-up">
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fa fa-envelope"></i></div>
+          <div class="contact-detail">
+            <h4>Email Bookings</h4>
+            <a href="mailto:bookings@jrozmusic.com">bookings@jrozmusic.com</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fa fa-phone"></i></div>
+          <div class="contact-detail">
+            <h4>Phone / Management</h4>
+            <a href="tel:+254700000000">+254 700 000 000</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fa fa-map-marker-alt"></i></div>
+          <div class="contact-detail">
+            <h4>Location</h4>
+            <p>Nairobi, Kenya</p>
+          </div>
+        </div>
+        <a href="https://wa.me/254700000000?text=Hi%2C%20I%20would%20like%20to%20book%20J.%20Roz%20for%20an%20event." target="_blank" class="whatsapp-btn" style="width:fit-content;">
+          <i class="fab fa-whatsapp"></i> WhatsApp Management
+        </a>
+      </div>
+
+      <div class="contact-form fade-up">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" placeholder="Full name" />
+          </div>
+          <div class="form-group">
+            <label>Company / Organization</label>
+            <input type="text" placeholder="Brand or company" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" placeholder="your@email.com" />
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" placeholder="+254 7XX XXX XXX" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Type of Engagement</label>
+          <select>
+            <option value="">Select service type</option>
+            <option>Brand Activation</option>
+            <option>Corporate Roadshow</option>
+            <option>Festival / Concert Appearance</option>
+            <option>Club / Venue Performance</option>
+            <option>Private Event</option>
+            <option>Influencer Campaign</option>
+            <option>Product Launch</option>
+            <option>Sponsored Content</option>
+            <option>Media / PR Opportunity</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Event Date</label>
+            <input type="date" />
+          </div>
+          <div class="form-group">
+            <label>Estimated Budget Range</label>
+            <select>
+              <option value="">Select budget range</option>
+              <option>Under KES 50,000</option>
+              <option>KES 50,000 – 150,000</option>
+              <option>KES 150,000 – 500,000</option>
+              <option>KES 500,000+</option>
+              <option>Let's Discuss</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Brief &amp; Details</label>
+          <textarea placeholder="Tell us about your event, campaign, or project. Include location, expected audience size, and any specific requirements."></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;padding:1.2rem;" onclick="handleSubmit(event)">
+          Send Booking Enquiry
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">J.<span>ROZ</span> <span style="font-family:'Outfit';font-size:0.9rem;font-weight:300;letter-spacing:0.05em;color:var(--grey);">MUSIC</span></a>
+        <p>The sound of the new Kenyan wave. Performing artist, brand collaborator, and youth culture influencer based in Nairobi, Kenya.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/jroz_music/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.youtube.com/@J.Roz_Music" target="_blank" class="social-btn"><i class="fab fa-youtube"></i></a>
+          <a href="https://wa.me/254700000000" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <ul>
+          <li><a href="#services">Brand Activations</a></li>
+          <li><a href="#services">Event Performances</a></li>
+          <li><a href="#services">Corporate Roadshows</a></li>
+          <li><a href="#services">Influencer Campaigns</a></li>
+          <li><a href="#services">Private Events</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="#about">About J. Roz</a></li>
+          <li><a href="#media">Media &amp; Music</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#instagram">Instagram Feed</a></li>
+          <li><a href="#contact">Book Now</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 J. Roz Music. All rights reserved.</p>
+      <p class="footer-credit">Designed by <a href="https://madshaqdigitalagency.com" target="_blank">Madshaq Digital Agency</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── NAV SCROLL ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── HAMBURGER ──
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+  const mobileClose = document.getElementById('mobileClose');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
+
+  hamburger.addEventListener('click', () => mobileNav.classList.add('open'));
+  mobileClose.addEventListener('click', () => mobileNav.classList.remove('open'));
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => mobileNav.classList.remove('open'));
+  });
+
+  // ── HERO SLIDER ──
+  const slides = document.querySelectorAll('.hero-slide');
+  const indicators = document.querySelectorAll('.indicator');
+  let current = 0;
+  let sliderTimer;
+
+  function goToSlide(index) {
+    slides[current].classList.remove('active');
+    indicators[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+    indicators[current].classList.add('active');
+  }
+
+  function nextSlide() {
+    goToSlide((current + 1) % slides.length);
+  }
+
+  function startSlider() {
+    sliderTimer = setInterval(nextSlide, 5000);
+  }
+
+  indicators.forEach(ind => {
+    ind.addEventListener('click', () => {
+      clearInterval(sliderTimer);
+      goToSlide(parseInt(ind.dataset.index));
+      startSlider();
+    });
+  });
+
+  startSlider();
+
+  // ── SCROLL ANIMATIONS ──
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  fadeEls.forEach(el => observer.observe(el));
+
+  // ── FORM SUBMIT ──
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target;
+    const orig = btn.textContent;
+    btn.textContent = 'Enquiry Sent — We Will Be in Touch';
+    btn.style.background = '#25D366';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.background = '';
+    }, 4000);
+  }
+
+  // ── SMOOTH SCROLL ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ── PARALLAX HERO ──
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const heroContent = document.querySelector('.hero-content');
+    if (heroContent && scrolled < window.innerHeight) {
+      heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
+      heroContent.style.opacity = 1 - (scrolled / (window.innerHeight * 0.7));
+    }
+  });
+</script>
+</body>
+</html>
